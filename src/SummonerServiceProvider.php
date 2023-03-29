@@ -22,12 +22,12 @@ class SummonerServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_summoner_table')
             ->hasCommands([SummonerCommand::class]);
-            // ->hasInstallCommand(function(InstallCommand $command) { 
-                // $command
-                    // ->publishCommands()
-                    // ->publishMigrations()
-                    // ->askToRunMigrations()
-                    // ->publishConfigFile();
-            // });
+        // ->hasInstallCommand(function(InstallCommand $command) {
+        // $command
+        // ->publishCommands()
+        // ->publishMigrations()
+        // ->askToRunMigrations()
+        // ->publishConfigFile();
+        // });
     }
 }

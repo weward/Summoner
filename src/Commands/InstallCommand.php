@@ -1,6 +1,7 @@
 <?php
 
 // namespace Spatie\LaravelPackageTools\Commands;
+
 namespace Weward\Summoner\Commands;
 
 use Closure;
@@ -21,7 +22,7 @@ class InstallCommand extends Command
     protected bool $shouldPublishMigrations = false;
 
     protected bool $shouldPublishCommands = false;
-    
+
     protected bool $askToRunMigrations = false;
 
     protected bool $copyServiceProviderInApp = false;
@@ -34,9 +35,9 @@ class InstallCommand extends Command
 
     public function __construct(Package $package)
     {
-        $this->signature = $package->shortName() . ':install';
+        $this->signature = $package->shortName().':install';
 
-        $this->description = 'Install ' . $package->name;
+        $this->description = 'Install '.$package->name;
 
         $this->package = $package;
 
@@ -52,7 +53,7 @@ class InstallCommand extends Command
         if ($this->shouldPublishConfigFile) {
             $this->comment('Publishing config file...');
 
-            $this->callSilently("vendor:publish", [
+            $this->callSilently('vendor:publish', [
                 '--tag' => "{$this->package->shortName()}-config",
             ]);
         }
@@ -60,7 +61,7 @@ class InstallCommand extends Command
         if ($this->shouldPublishAssets) {
             $this->comment('Publishing assets...');
 
-            $this->callSilently("vendor:publish", [
+            $this->callSilently('vendor:publish', [
                 '--tag' => "{$this->package->shortName()}-assets",
             ]);
         }
@@ -68,11 +69,11 @@ class InstallCommand extends Command
         if ($this->shouldPublishMigrations) {
             $this->comment('Publishing migration...');
 
-            $this->callSilently("vendor:publish", [
+            $this->callSilently('vendor:publish', [
                 '--tag' => "{$this->package->shortName()}-migrations",
             ]);
         }
-        
+
         if ($this->shouldPublishCommands) {
             $this->comment('Publishing artisan commands...');
 
@@ -136,7 +137,7 @@ class InstallCommand extends Command
 
         return $this;
     }
-    
+
     public function publishCommands(): self
     {
         $this->shouldPublishCommands = true;
@@ -183,68 +184,68 @@ class InstallCommand extends Command
     {
         $providerName = $this->package->publishableProviderName;
 
-        if (!$providerName) {
+        if (! $providerName) {
             return $this;
         }
 
-        $this->callSilent('vendor:publish', ['--tag' => $this->package->shortName() . '-provider']);
+        $this->callSilent('vendor:publish', ['--tag' => $this->package->shortName().'-provider']);
 
         $namespace = Str::replaceLast('\\', '', $this->laravel->getNamespace());
 
         $appConfig = file_get_contents(config_path('app.php'));
 
-        $class = '\\Providers\\' . $providerName . '::class';
+        $class = '\\Providers\\'.$providerName.'::class';
 
-        if (Str::contains($appConfig, $namespace . $class)) {
+        if (Str::contains($appConfig, $namespace.$class)) {
             return $this;
         }
 
         file_put_contents(config_path('app.php'), str_replace(
             "Illuminate\\View\ViewServiceProvider::class,",
-            "Illuminate\\View\ViewServiceProvider::class," . PHP_EOL . "        {$namespace}\Providers\\" . $providerName . "::class,",
+            "Illuminate\\View\ViewServiceProvider::class,".PHP_EOL."        {$namespace}\Providers\\".$providerName.'::class,',
             $appConfig
         ));
 
-        file_put_contents(app_path('Providers/' . $providerName . '.php'), str_replace(
+        file_put_contents(app_path('Providers/'.$providerName.'.php'), str_replace(
             "namespace App\Providers;",
             "namespace {$namespace}\Providers;",
-            file_get_contents(app_path('Providers/' . $providerName . '.php'))
+            file_get_contents(app_path('Providers/'.$providerName.'.php'))
         ));
 
         return $this;
     }
 
-    protected function copyArtisanCommandsInApp(): self 
+    protected function copyArtisanCommandsInApp(): self
     {
         $providerName = $this->package->publishableProviderName;
 
-        if (!$providerName) {
+        if (! $providerName) {
             return $this;
         }
 
-        $this->callSilent('vendor:publish', ['--tag' => $this->package->shortName() . '-commands']);
+        $this->callSilent('vendor:publish', ['--tag' => $this->package->shortName().'-commands']);
 
         $namespace = Str::replaceLast('\\', '', $this->laravel->getNamespace());
         $this->info($namespace);
 
         $appConfig = file_get_contents(config_path('app.php'));
 
-        $class = '\\Providers\\' . $providerName . '::class';
+        $class = '\\Providers\\'.$providerName.'::class';
 
-        if (Str::contains($appConfig, $namespace . $class)) {
+        if (Str::contains($appConfig, $namespace.$class)) {
             return $this;
         }
 
         file_put_contents(config_path('app.php'), str_replace(
             "Illuminate\\View\ViewServiceProvider::class,",
-            "Illuminate\\View\ViewServiceProvider::class," . PHP_EOL . "        {$namespace}\Console\Commands\\" . $providerName . "::class,",
+            "Illuminate\\View\ViewServiceProvider::class,".PHP_EOL."        {$namespace}\Console\Commands\\".$providerName.'::class,',
             $appConfig
         ));
 
-        file_put_contents(app_path('Console/Commands/' . $providerName . '.php'), str_replace(
+        file_put_contents(app_path('Console/Commands/'.$providerName.'.php'), str_replace(
             "namespace App\Console\Commands;",
             "namespace {$namespace}\Console\Commands;",
-            file_get_contents(app_path('Console/Commands/' . $providerName . '.php'))
+            file_get_contents(app_path('Console/Commands/'.$providerName.'.php'))
         ));
 
         return $this;

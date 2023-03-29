@@ -23,6 +23,7 @@ class SummonerCommand extends Command
         if ($queue) {
             $job::dispatch(...$params)->onQueue($queue);
             $this->info("{$job} wasa successfully dispatched on {$queue} queue!");
+
             return null;
         }
 
