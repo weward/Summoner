@@ -20,7 +20,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require weward/summoner
+composer require weward/summoner:dev-main
 ```
 
 Install all required files:
@@ -28,6 +28,30 @@ Install all required files:
 ```bash
 php artisan Summoner:install
 ```
+
+# Using 
+
+```
+# php artisan manual:job {job} {--param=*} {--queue=}
+php artisan manual:job SendEmailNotification  --param=dev.weward@gmail.com --param=This is the subject 
+
+```
+
+
+
+
+
+.
+.
+---
+
+
+# Optional 
+
+You may customize the config, migrations and views assocciated with this package while the official files are still under development --which concerns logging.
+
+
+---
 
 You can publish and run the migrations with:
 
