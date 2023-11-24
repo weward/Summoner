@@ -33,7 +33,7 @@ php artisan Summoner:install
 
 ```
 # php artisan manual:job {job} {--param=*} {--queue=}
-php artisan manual:job SendEmailNotification  --param=dev.weward@gmail.com --param=This is the subject 
+php artisan manual:job SendEmailNotification  --param=dev.weward@gmail.com --param="This is the subject"
 
 ```
 
